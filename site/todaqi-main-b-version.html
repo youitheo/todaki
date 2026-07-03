@@ -1,0 +1,1424 @@
+<!-- wp:html -->
+<!-- ============================================================
+     TODAQI 메인 B-버전 (entity-separation-plan / site-b-structure-guide 반영)
+     변경 요약:
+     1) MEANING 섹션 → SERVICE 섹션으로 재프레이밍 (토닥이 뜻 쿼리는 A 전담)
+     2) /reviews/ 대표 허브 링크 추가 (게시 전 /reviews/ 페이지 생성 필수)
+     3) 공식센터 근거 문구 추가 (FAQ 3번 + 운영 기준 박스)
+     4) JSON-LD 스키마 추가: WebSite, Organization, Service(areaServed), FAQPage
+     5) 카사노바 영상 라벨 중립화 (파일명 교체는 별도 작업 필요)
+     디자인 시스템 CSS는 원본 v5.1 그대로 유지.
+     ============================================================ -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&amp;family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   TODAQI DESIGN SYSTEM v5.1
+   메인 본문 전용 - 헤더/하단바 제외
+   ============================================================ */
+
+body.page .entry-title { display:none !important; }
+body.page .site-main { max-width:none !important; padding:0 !important; }
+body.page .page-content,
+body.page .entry-content { margin:0 !important; }
+body.page { overflow-x:hidden !important; }
+body.page .entry-content { max-width:100vw !important; overflow-x:hidden !important; }
+body.page .tq-app,
+body.page .tq-app * { box-sizing:border-box; }
+
+.tq-app {
+  --tq-pink:        #E89BA5;
+  --tq-pink-deep:   #D87A8A;
+  --tq-pink-soft:   #FBE7EB;
+  --tq-pink-tint:   #FDF3F4;
+  --tq-lilac:       #EFE5F5;
+  --tq-mint:        #DCEFE0;
+  --tq-ink:         #2A2A2A;
+  --tq-ink-soft:    #555555;
+  --tq-muted:       #8A8A8A;
+  --tq-line:        #EFE6E5;
+  --tq-line-soft:   #F5EEED;
+  --tq-bg:          #FDFAF8;
+  --tq-card:        #FFFFFF;
+  --tq-radius-sm:   10px;
+  --tq-radius:      16px;
+  --tq-radius-lg:   22px;
+  --tq-radius-pill: 999px;
+  --tq-shadow-sm:   0 2px 8px rgba(216, 122, 138, .06);
+  --tq-shadow:      0 6px 22px rgba(40, 30, 30, .07);
+  --tq-app-w: 680px;
+  --tq-pad-x: 22px;
+  font-family: 'Noto Sans KR', Pretendard, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--tq-ink);
+  background: var(--tq-bg);
+  line-height: 1.62;
+  width: min(100vw, var(--tq-app-w));
+  max-width: var(--tq-app-w);
+  margin: 0 auto;
+  padding-bottom: 24px;
+  overflow-x: hidden;
+  position: relative;
+}
+.tq-app *, .tq-app *::before, .tq-app *::after { box-sizing: border-box; }
+.tq-app img { max-width: 100%; display: block; }
+.tq-app a { color: inherit; text-decoration: none; }
+.tq-wrap { padding-left: var(--tq-pad-x); padding-right: var(--tq-pad-x); }
+
+.tq-app p,
+.tq-app li,
+.tq-app dd,
+.tq-app dt,
+.tq-app td,
+.tq-app th,
+.tq-app button,
+.tq-app input,
+.tq-app textarea,
+.tq-app b,
+.tq-app strong,
+.tq-app span,
+.tq-app a,
+.tq-app h1,
+.tq-app h2,
+.tq-app h3 { letter-spacing: 0 !important; }
+
+/* Hero */
+.tq-hero {
+  padding: 28px var(--tq-pad-x) 30px;
+  background: linear-gradient(180deg, var(--tq-pink-tint) 0%, var(--tq-bg) 100%);
+}
+.tq-hero-brand {
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 64px;
+  color: var(--tq-pink-deep);
+  line-height: 1;
+  margin: 6px 0 0;
+}
+.tq-hero-sub {
+  margin: 14px 0 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  line-height: 1.32;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.tq-hero-sub span { display: block; }
+.tq-hero-lead {
+  margin: 14px 0 0;
+  font-size: 14.5px;
+  color: var(--tq-ink-soft);
+  line-height: 1.72;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+.tq-hero-tagline {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--tq-ink-soft);
+  background: #fff8fa;
+  border-left: 3px solid #e7c9d3;
+  border-radius: 0 10px 10px 0;
+  padding: 10px 14px;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+.tq-hero-lead a {
+  color: var(--tq-pink-deep);
+  font-weight: 700;
+  border-bottom: 1px solid var(--tq-pink-soft);
+}
+.tq-hero-figure {
+  margin: 18px 0 0;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(178,86,112,.12);
+}
+.tq-hero-figure img { width: 100%; height: auto; }
+
+/* Trust badges */
+.tq-trust { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.tq-trust-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-trust-ico {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--tq-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.tq-trust-ico.lilac { background: var(--tq-lilac); color: #7E5BA0; }
+.tq-trust-ico.mint { background: var(--tq-mint); color: #3F8F5C; }
+.tq-trust-ico.pink { background: var(--tq-pink-soft); color: var(--tq-pink-deep); }
+.tq-trust-tx b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 2px;
+}
+.tq-trust-tx span { display: block; font-size: 12.5px; color: var(--tq-muted); }
+
+/* Anchor chips */
+.tq-anchor {
+  display: flex;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 4px var(--tq-pad-x);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tq-anchor::-webkit-scrollbar { display: none; }
+.tq-anchor a {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+  background: var(--tq-card);
+  border: 1px solid var(--tq-line);
+  border-radius: var(--tq-radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tq-ink-soft);
+  white-space: nowrap;
+}
+.tq-anchor a:hover { background: var(--tq-pink); border-color: var(--tq-pink); color: #fff; }
+
+/* Section */
+.tq-section { padding: 36px var(--tq-pad-x) 8px; }
+.tq-section + .tq-section { padding-top: 28px; }
+.tq-section-head { margin-bottom: 18px; }
+.tq-section-eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--tq-pink-deep);
+  background: var(--tq-pink-soft);
+  padding: 4px 10px;
+  border-radius: var(--tq-radius-pill);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.tq-section h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.32;
+  color: var(--tq-ink);
+  word-break: keep-all;
+}
+.tq-section h2 .accent { color: var(--tq-pink-deep); }
+.tq-section-head p,
+.tq-copy p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--tq-ink-soft);
+  line-height: 1.72;
+  word-break: keep-all;
+}
+.tq-copy p { margin-bottom: 12px; font-size: 14.5px; line-height: 1.78; }
+.tq-copy a,
+.tq-info-box a,
+.tq-review-note a {
+  color: var(--tq-pink-deep);
+  font-weight: 800;
+  border-bottom: 1px solid var(--tq-pink-soft);
+}
+
+.tq-em {
+  color: var(--tq-pink-deep);
+  font-weight: 900;
+}
+
+/* Step indicator */
+.tq-steps {
+  margin: 18px 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 14px 1fr 14px 1fr;
+  gap: 6px;
+  align-items: center;
+}
+.tq-step {
+  padding: 14px 8px;
+  border-radius: var(--tq-radius);
+  text-align: center;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.3;
+}
+.tq-step b { display: block; font-size: 11.5px; font-weight: 700; opacity: .8; margin-bottom: 4px; }
+.tq-step.s1 { background: var(--tq-pink-soft); color: var(--tq-pink-deep); }
+.tq-step.s2 { background: var(--tq-lilac); color: #7E5BA0; }
+.tq-step.s3 { background: var(--tq-mint); color: #3F8F5C; }
+.tq-step-arrow { text-align: center; font-size: 14px; color: var(--tq-muted); font-weight: 700; }
+
+/* Cards */
+.tq-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+.tq-card-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
+.tq-card-mini {
+  padding: 16px 14px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius-sm);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-card-mini b {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 6px;
+}
+.tq-card-mini p { margin: 0; font-size: 12.5px; color: var(--tq-muted); line-height: 1.62; word-break: keep-all; }
+
+/* Process */
+.tq-process { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.tq-process-item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 16px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-process-num {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink-soft);
+  color: var(--tq-pink-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+}
+.tq-process-tx b {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 4px;
+}
+.tq-process-tx p { margin: 0; font-size: 13.5px; color: var(--tq-ink-soft); line-height: 1.7; word-break: keep-all; }
+
+/* Standards */
+.tq-standard-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tq-standard {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-standard::before {
+  content: "✓";
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  margin-top: 2px;
+}
+.tq-standard b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 3px;
+}
+.tq-standard span { display: block; font-size: 13px; color: var(--tq-ink-soft); line-height: 1.66; word-break: keep-all; }
+
+/* Course list */
+.tq-course-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.tq-course {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 18px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-course-ico {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.tq-course-ico.b { background: var(--tq-pink-soft); color: var(--tq-pink-deep); }
+.tq-course-ico.c { background: var(--tq-lilac); color: #7E5BA0; }
+.tq-course-tx b {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 4px;
+}
+.tq-course-tx span { display: block; font-size: 12.5px; color: var(--tq-muted); line-height: 1.5; }
+.tq-course-price { text-align: right; }
+.tq-course-price strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--tq-ink);
+  line-height: 1;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+.tq-course-price em {
+  display: inline-block;
+  padding: 5px 12px;
+  background: var(--tq-pink);
+  color: #fff;
+  border-radius: var(--tq-radius-pill);
+  font-size: 11.5px;
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Info box */
+.tq-info-box {
+  padding: 18px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-info-box p { margin: 0; font-size: 14px; color: var(--tq-ink); line-height: 1.74; word-break: keep-all; }
+.tq-info-box + .tq-info-box { margin-top: 10px; }
+.tq-info-points {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tq-info-points li {
+  position: relative;
+  padding: 10px 12px 10px 32px;
+  background: var(--tq-pink-tint);
+  border-radius: var(--tq-radius-sm);
+  font-size: 13px;
+  color: var(--tq-ink-soft);
+  line-height: 1.62;
+  word-break: keep-all;
+}
+.tq-info-points li::before {
+  content: "✓";
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  color: var(--tq-pink-deep);
+  font-weight: 900;
+  font-size: 12px;
+}
+
+/* Compare table */
+.tq-table-wrap {
+  margin-top: 14px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+  overflow: hidden;
+}
+.tq-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tq-table th,
+.tq-table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--tq-line-soft);
+  word-break: keep-all;
+  line-height: 1.6;
+}
+.tq-table th { background: var(--tq-pink-tint); color: var(--tq-ink); font-weight: 800; font-size: 12px; }
+.tq-table tr:last-child td { border-bottom: 0; }
+.tq-table td:first-child { font-weight: 700; color: var(--tq-ink); width: 25%; }
+
+/* Review */
+.tq-review-summary {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  padding: 18px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+  align-items: center;
+}
+.tq-review-score { text-align: center; padding-right: 12px; border-right: 1px solid var(--tq-line); }
+.tq-review-score b { display: block; font-size: 12px; color: var(--tq-pink-deep); margin-bottom: 4px; font-weight: 800; }
+.tq-review-score .num {
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--tq-ink);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.tq-review-score .stars { display: block; font-size: 12px; color: var(--tq-pink); }
+.tq-review-note { font-size: 12.5px; color: var(--tq-ink-soft); line-height: 1.7; word-break: keep-all; }
+
+/* Region */
+.tq-region-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tq-region {
+  padding: 16px 18px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.tq-region::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 56px;
+  height: 56px;
+  background: var(--tq-pink-soft);
+  border-radius: 50%;
+  transform: translate(35%, -45%);
+}
+.tq-region b {
+  display: block;
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--tq-ink);
+  margin-bottom: 6px;
+  position: relative;
+}
+.tq-region span { display: block; font-size: 13.5px; color: var(--tq-ink-soft); line-height: 1.66; word-break: keep-all; position: relative; }
+.tq-region-hub { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 22px 0 18px; }
+.tq-hub-card {
+  background: #fff;
+  border: 1px solid #f0e3e7;
+  border-radius: 18px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+.tq-hub-card:hover { border-color: #e7c9d3; transition: border-color .2s; }
+.tq-hub-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #fdeef2;
+  color: #b25670;
+  font-weight: 700;
+  font-size: .82rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.tq-hub-desc { margin: 2px 0 4px; color: #4d3a40; font-size: .94rem; line-height: 1.55; }
+.tq-hub-link { color: #b25670; font-weight: 600; font-size: .94rem; text-decoration: none; }
+.tq-hub-link:hover { text-decoration: underline; }
+
+/* FAQ */
+.tq-faq { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tq-faq details {
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+  overflow: hidden;
+}
+.tq-faq details[open] { background: var(--tq-pink-tint); }
+.tq-faq summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  gap: 12px;
+  align-items: center;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--tq-ink);
+  word-break: keep-all;
+  line-height: 1.5;
+}
+.tq-faq summary::-webkit-details-marker { display: none; }
+.tq-faq summary::after {
+  content: "+";
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink-soft);
+  color: var(--tq-pink-deep);
+  font-weight: 900;
+  font-size: 14px;
+}
+.tq-faq details[open] summary::after { content: "−"; }
+.tq-faq-body {
+  padding: 0 18px 18px;
+  font-size: 13.5px;
+  color: var(--tq-ink-soft);
+  line-height: 1.74;
+  word-break: keep-all;
+}
+
+/* Inline link */
+.tq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--tq-pink-deep);
+}
+.tq-link::after { content: "›"; font-size: 16px; line-height: 1; }
+.tq-link-primary { margin-top: 8px; display: inline-block; }
+
+/* Feature */
+.tq-feature { margin: 4px 0 8px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tq-feature article {
+  padding: 16px 6px;
+  background: var(--tq-card);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow-sm);
+  text-align: center;
+}
+.tq-feature-ico {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink-soft);
+  color: var(--tq-pink-deep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 18px;
+}
+.tq-feature b {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--tq-ink);
+  margin-bottom: 3px;
+}
+.tq-feature span { display: block; font-size: 10.5px; color: var(--tq-muted); line-height: 1.4; word-break: keep-all; }
+
+.tq-section-figure {
+  margin: 0 0 22px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(178,86,112,.10);
+}
+.tq-section-figure img { width: 100%; height: auto; }
+.tq-intro-note {
+  margin: 8px 0 14px;
+  color: #5b4750;
+  font-size: .95rem;
+  line-height: 1.65;
+  background: #fff8fa;
+  border-left: 3px solid #e7c9d3;
+  border-radius: 0 10px 10px 0;
+  padding: 10px 14px;
+  word-break: keep-all;
+}
+
+@media (min-width: 760px) {
+  .tq-hero-figure { max-width: 520px; margin-left: auto; margin-right: auto; }
+  .tq-section-figure { max-width: 680px; margin-left: auto; margin-right: auto; }
+}
+
+/* Image width tuning: keep guide covers balanced with breathing room without cropping. */
+.tq-app .tq-hero-figure,
+.tq-app .tq-section-figure {
+  width: 92vw !important;
+  max-width: 92vw !important;
+  min-width: 0;
+  margin-left: 50%;
+  margin-right: 0;
+  transform: translateX(-50%);
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.tq-hero-figure img,
+.tq-section-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: inherit;
+}
+
+@media (min-width: 1024px) {
+  .tq-app .tq-hero-figure {
+    width: 640px !important;
+    max-width: 640px !important;
+  }
+
+  .tq-app .tq-section-figure {
+    width: 620px !important;
+    max-width: 620px !important;
+  }
+}
+
+
+@media (max-width: 760px) {
+  .tq-region-hub { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .tq-hero-brand { font-size: 56px; }
+  .tq-hero-sub { font-size: 20px; }
+  .tq-section h2 { font-size: 20px; }
+  .tq-card-grid.col-3 { grid-template-columns: 1fr; }
+  .tq-feature { grid-template-columns: repeat(2, 1fr); }
+  .tq-steps { grid-template-columns: 1fr; gap: 8px; }
+  .tq-step-arrow { display: none; }
+  .tq-step { padding: 13px 12px; font-size: 12.5px; text-align: left; }
+  .tq-step b { display: inline; margin: 0 6px 0 0; font-size: 11px; }
+  .tq-review-summary { grid-template-columns: 90px 1fr; gap: 12px; }
+  .tq-review-score .num { font-size: 28px; }
+  .tq-table,
+  .tq-table thead,
+  .tq-table tbody,
+  .tq-table tr,
+  .tq-table th,
+  .tq-table td { display: block; width: 100%; }
+  .tq-table thead { display: none; }
+  .tq-table tr { padding: 12px; border-bottom: 1px solid var(--tq-line-soft); }
+  .tq-table tr:last-child { border-bottom: 0; }
+  .tq-table td { border: 0; padding: 4px 0; }
+  .tq-table td:first-child { width: 100%; color: var(--tq-pink-deep); font-weight: 850; }
+}
+/* aggressive mobile width guard */
+@media (max-width: 760px) {
+  html, body { width:100% !important; overflow-x:hidden !important; }
+  body.page .site-main,
+  body.page .page-content,
+  body.page .entry-content { width:100vw !important; max-width:100vw !important; min-width:0 !important; overflow-x:hidden !important; }
+  .tq-app { width:100vw !important; max-width:100vw !important; min-width:0 !important; margin-left:0 !important; margin-right:0 !important; overflow-x:hidden !important; }
+  .tq-app section,
+  .tq-app article,
+  .tq-app figure,
+  .tq-app nav,
+  .tq-hero,
+  .tq-section,
+  .tq-copy,
+  .tq-card,
+  .tq-card-grid,
+  .tq-trust,
+  .tq-hero-lead,
+  .tq-hero-tagline { width:100% !important; max-width:100% !important; min-width:0 !important; }
+  .tq-app p,
+  .tq-app li,
+  .tq-app dd,
+  .tq-app dt,
+  .tq-app h1,
+  .tq-app h2,
+  .tq-app h3,
+  .tq-app span,
+  .tq-app strong,
+  .tq-app b { max-width:100% !important; overflow-wrap:anywhere !important; word-break:normal !important; }
+}
+
+/* Stage UX polish: Korean line breaks, table captions, CTA alignment */
+.tq-app,
+.tq-app * {
+  word-break: keep-all;
+  line-break: strict;
+}
+.tq-table-title {
+  margin: 0;
+  padding: 14px 14px 6px;
+  font-size: 14px;
+  font-weight: 850;
+  color: var(--tq-ink);
+  line-height: 1.45;
+}
+@media (max-width: 760px) {
+  .tq-app p,
+  .tq-app li,
+  .tq-app dd,
+  .tq-app dt,
+  .tq-app h1,
+  .tq-app h2,
+  .tq-app h3,
+  .tq-app span,
+  .tq-app strong,
+  .tq-app b,
+  .tq-app a,
+  .tq-app summary,
+  .tq-app td,
+  .tq-app th {
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-break: strict !important;
+  }
+  .tq-wrap {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .tq-table-title {
+    padding: 14px 14px 0;
+  }
+  .tq-table-wrap {
+    overflow: hidden;
+  }
+  .tq-table tr {
+    padding: 14px 12px;
+  }
+  .tq-table td:first-child {
+    margin-bottom: 7px;
+    line-height: 1.35;
+  }
+  .tq-process-item,
+  .tq-standard {
+    align-items: flex-start;
+  }
+  .tq-process-num,
+  .tq-standard::before {
+    flex: 0 0 auto;
+  }
+  .tq-link {
+    display: flex;
+    width: 100%;
+    min-height: 46px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    border: 1px solid var(--tq-line-soft);
+    border-radius: 16px;
+    background: var(--tq-card);
+  }
+  .tq-link::after {
+    flex: 0 0 auto;
+  }
+  .tq-faq summary {
+    min-height: 48px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .tq-hero-lead,
+  .tq-hero-lead *,
+  .tq-hero-tagline,
+  .tq-hero-tagline * {
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+    line-break: auto !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .tq-wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .tq-section h2 {
+    font-size: 19px;
+    line-height: 1.38;
+  }
+  .tq-hero-lead,
+  .tq-hero-tagline,
+  .tq-copy p,
+  .tq-info-box p {
+    font-size: 14px;
+  }
+}
+
+
+
+/* TDQ private homepage staging: entity definition and routing flow */
+.tq-hero-flow {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+.tq-flow-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--tq-line);
+  border-radius: var(--tq-radius);
+  background: var(--tq-card);
+  box-shadow: var(--tq-shadow-sm);
+}
+.tq-flow-card.primary {
+  border-color: rgba(216, 122, 138, .42);
+  background: #fff8fa;
+}
+.tq-flow-kicker {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+  border-radius: var(--tq-radius-pill);
+  background: var(--tq-pink-soft);
+  color: var(--tq-pink-deep);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+}
+.tq-flow-card b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 850;
+  color: var(--tq-ink);
+  line-height: 1.35;
+}
+.tq-flow-card p {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: var(--tq-muted);
+  line-height: 1.58;
+  word-break: keep-all;
+}
+@media (min-width: 620px) {
+  .tq-hero-flow.secondary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 380px) {
+  .tq-flow-card {
+    grid-template-columns: 50px 1fr;
+    padding: 13px 14px;
+  }
+}
+
+
+/* TDQ-CASANOVA-VIDEO-20260701: visual video block, no heading or schema changes */
+.tq-casanova-video {
+  width: 92vw !important;
+  max-width: 92vw !important;
+  min-width: 0;
+  margin: 22px 0 22px 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+.tq-casanova-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #111;
+  box-shadow: 0 14px 34px rgba(18, 24, 38, 0.16);
+}
+.tq-casanova-video-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111;
+}
+.tq-casanova-video-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.18);
+}
+.tq-casanova-video-play span {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+.tq-casanova-video-play span::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 26px;
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 18px solid #121826;
+}
+.tq-casanova-video.is-playing .tq-casanova-video-play {
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .tq-app .tq-casanova-video {
+    width: 620px !important;
+    max-width: 620px !important;
+  }
+}
+@media (max-width: 767px) {
+  .tq-casanova-video-play span {
+    width: 56px;
+    height: 56px;
+  }
+  .tq-casanova-video-play span::after {
+    top: 17px;
+    left: 23px;
+  }
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://todaqi.com/#website",
+      "url": "https://todaqi.com/",
+      "name": "토닥이 공식센터",
+      "inLanguage": "ko"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://todaqi.com/#organization",
+      "name": "토닥이 공식센터",
+      "url": "https://todaqi.com/",
+      "description": "여기서 말하는 공식센터는 todaqi.com에서 직접 운영하는 가격·코스·프로필·지역 상담 안내 채널을 뜻합니다.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "url": "https://todaqi.com/chat",
+        "availableLanguage": "Korean"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://todaqi.com/#service",
+      "name": "여성전용 남성관리사 방문마사지 예약 안내",
+      "serviceType": "여성전용마사지 방문 케어 안내",
+      "provider": { "@id": "https://todaqi.com/#organization" },
+      "areaServed": ["서울특별시", "경기도", "인천광역시"],
+      "audience": { "@type": "PeopleAudience", "suggestedGender": "https://schema.org/Female" },
+      "url": "https://todaqi.com/"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://todaqi.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "토닥이 공식센터는 어떤 서비스인가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "토닥이 공식센터는 여성 고객이 집·호텔·숙소 등 머무는 공간에서 남성관리사 방문 케어를 예약하기 전, 가격·코스·프로필·후기·결제 방식·가능 지역을 확인하도록 정리한 여성전용마사지 안내 서비스입니다. 예약 전에는 이용 지역과 시간, 코스 총액, 프로필 확인 방식, 후불·예약금 조건을 함께 확인하는 것이 핵심입니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "사이트마다 안내가 다른가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. 코스명, 가격 안내, 프로필 확인 방식은 사이트마다 다를 수 있습니다. 예약 전에는 실제 가격, 배정 가능 정보, 결제 방식, 가능 지역을 기준으로 비교하는 편이 좋습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "공식센터는 어떤 역할을 하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "여기서 말하는 공식센터는 todaqi.com에서 직접 운영하는 가격·코스·프로필·지역 상담 안내 채널을 뜻합니다. 예약 전 확인 기준을 정리하고 가격·관리사·후기·지역 안내로 이어주는 메인 허브이며, 세부 확정 내용은 공식 문의에서 다시 확인합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "불건전 서비스도 안내하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "아닙니다. 이 페이지는 여성전용마사지의 예약 전 확인 기준을 안내하며, 불법 또는 불건전 서비스, 성적 서비스, 조건만남, 애인대행, 유사 성행위, 의료적 치료 행위는 안내하지 않습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "가격은 어디서 확인하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "메인에서는 가격을 판단하는 기준만 먼저 확인합니다. B코스 90분 160,000원, C코스 120분 200,000원이 기본 안내이며, 추가비와 예약금 안내는 가격 안내 페이지에서 자세히 확인하면 됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "관리사 정보는 어떻게 봐야 하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "처음 문의할 때는 사진만 요청하기보다 희망 시간, 위치, 가능한 관리사 정보, 실제 배정 가능 여부를 함께 물어보면 됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "후불 결제와 예약금은 어떻게 다른가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "후불 결제는 이용 후 결제하는 방식이고, 예약금은 연락 확인이 어려운 경우 먼저 안내될 수 있는 금액입니다. 예약금이 필요한지는 상담 초반에 확인하면 됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "지역페이지는 왜 따로 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "메인은 서비스 기준을 설명하고, 지역페이지는 실제 생활권별 방문 가능 시간과 이동 가능성을 더 자세히 보여줍니다. 강남·수원·인천처럼 생활권이 다르면 확인 기준도 달라질 수 있습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "처음 문의할 때 무엇을 말하면 되나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "가까운 역이나 동네, 원하는 시간, 보고 싶은 코스, 관리사 확인 여부, 후불 결제 방식을 함께 남기면 됩니다. 예를 들어 \"강남역 근처이고 오늘 9시 이후 가능한가요? B코스와 C코스 가격, 관리사 확인, 후불 결제 방식도 알고 싶습니다\"처럼 문의하면 됩니다." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<main class="tq-app">
+<section class="tq-hero" id="hero"><h1 class="tq-hero-sub">토닥이 공식센터 여성전용 남성관리사 예약 안내</h1>
+<p class="tq-hero-lead">토닥이 공식센터는 여성 고객이 집·호텔·숙소 등 머무는 공간에서 남성관리사 방문 케어를 예약하기 전, 가능 지역·희망 시간·가격·B/C코스·프로필·후기·후불·예약금 기준을 한 번에 확인하는 여성전용마사지 안내 서비스입니다.</p>
+<p class="tq-hero-tagline">처음 검색했다면 긴 설명보다 <strong class="tq-em">현재 가능한 지역과 시간</strong>을 먼저 맞추는 것이 빠릅니다. 혼자 이동이 부담되는 밤이나 호텔·숙소 일정 전에는 카톡에서 가능 프로필, B/C코스 총액, 후불·예약금 조건을 먼저 확인하세요.</p>
+<div aria-label="토닥이 예약 전 확인 흐름" class="tq-hero-flow">
+<a class="tq-flow-card primary" href="https://todaqi.com/chat">
+<span class="tq-flow-kicker">카톡 확인</span>
+<span><b>카톡으로 가능 지역·시간 확인</b><p>희망 지역과 시간만 보내면 현재 가능한 프로필·B/C코스 총액·후불/예약금 조건을 먼저 맞춥니다.</p></span>
+</a>
+</div>
+<div aria-label="토닥이 공식센터 핵심 안내" class="tq-trust">
+<div class="tq-trust-row">
+<span aria-hidden="true" class="tq-trust-ico lilac">🛡</span>
+<span class="tq-trust-tx"><b>일평균 고객 12.8명</b><span>가능 지역·시간을 먼저 맞춘 뒤 상담</span></span>
+</div>
+<div class="tq-trust-row">
+<span aria-hidden="true" class="tq-trust-ico mint">🔒</span>
+<span class="tq-trust-tx"><b>총 관리사 40여 명</b><span>희망 시간대의 가능 프로필 확인</span></span>
+</div>
+<div class="tq-trust-row">
+<span aria-hidden="true" class="tq-trust-ico pink">💗</span>
+<span class="tq-trust-tx"><b>후기 기준 재구성</b><span>실제 후기에서 반복된 상담·방문·결제 확인 흐름만 요약</span></span>
+</div>
+</div>
+<figure class="tq-hero-figure">
+<img alt="토닥이 여성전용마사지 공식 안내 대표 이미지" height="1672" loading="eager" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-hero-magazine-cover.webp" width="941"/>
+</figure>
+<div aria-label="토닥이 내부 확인 경로" class="tq-hero-flow secondary">
+<a class="tq-flow-card" href="https://todaqi.com/todaki-first-time/">
+<span class="tq-flow-kicker">처음</span>
+<span><b>처음 이용 전 순서</b><p>무엇을 보내고 어떤 기준을 확인할지 먼저 봅니다.</p></span>
+</a>
+<a class="tq-flow-card" href="https://todaqi.com/price/">
+<span class="tq-flow-kicker">가격</span>
+<span><b>가격·B/C코스 총액 기준</b><p>시간, 추가비, 예약금 여부를 함께 봅니다.</p></span>
+</a>
+<a class="tq-flow-card" href="https://todaqi.com/profile/">
+<span class="tq-flow-kicker">프로필</span>
+<span><b>남성관리사 프로필 확인</b><p>사진보다 실제 배정 가능 여부를 확인합니다.</p></span>
+</a>
+<a class="tq-flow-card" href="https://todaqi.com/local/">
+<span class="tq-flow-kicker">지역</span>
+<span><b>가능 지역 먼저 확인</b><p>서울·경기·인천 생활권별 가능 여부를 봅니다.</p></span>
+</a>
+<a class="tq-flow-card" href="https://todaqi.com/todaki-safe-payment/">
+<span class="tq-flow-kicker">결제</span>
+<span><b>후불·예약금 기준</b><p>연락 방식에 따른 결제 조건을 확인합니다.</p></span>
+</a>
+<a class="tq-flow-card" href="https://todaqi.com/reviews/">
+<span class="tq-flow-kicker">후기</span>
+<span><b>후기 대표 페이지 보기</b><p>실제 상담·방문·결제 흐름이 보이는 후기를 모아 봅니다.</p></span>
+</a>
+</div>
+</section>
+<nav aria-label="페이지 내 빠른 이동" class="tq-anchor">
+<a href="#meaning">서비스 기준</a>
+<a href="#intent">확인 기준</a>
+<a href="#truth">안전 기준</a>
+<a href="#price">가격</a>
+<a href="#profile">관리사</a>
+<a href="#payment-heading">결제</a>
+<a href="#review">후기</a>
+<a href="#region">지역</a>
+<a href="#faq">FAQ</a>
+</nav>
+<section class="tq-section" id="meaning-section">
+<div class="tq-wrap">
+<figure class="tq-section-figure">
+<img alt="토닥이 공식센터 서비스 기준을 정리한 안내 이미지" height="1672" loading="lazy" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-process-guide-cover.webp" width="941"/>
+</figure><div class="tq-casanova-video" data-tdq-component="casanova-video"><div class="tq-casanova-video-frame"><video aria-label="토닥이 공식센터 서비스 소개 영상" class="tq-casanova-video-media" loop="" muted="" playsinline="" poster="https://todaqi.com/wp-content/uploads/2026/07/todaqi-casanova-video-poster-3-5s.webp" preload="metadata"><source src="https://todaqi.com/wp-content/uploads/2026/05/%ED%86%A0%EB%8B%A5%EC%9D%B4-%EC%B9%B4%EC%82%AC%EB%85%B8%EB%B0%94-%ED%99%8D%EB%B3%B4-%EC%98%81%EC%83%81.mp4" type="video/mp4"/></video><button aria-label="영상 재생" class="tq-casanova-video-play" type="button"><span aria-hidden="true"></span></button></div></div>
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">01 · SERVICE</span>
+<h2 id="meaning">토닥이 공식센터는 어떤 서비스를 안내하나요?</h2>
+<p>토닥이 공식센터는 여성 고객이 예약 전 가격, 코스, 남성관리사 프로필, 후기, 결제 방식, 가능 지역을 비교할 수 있도록 만든 안내 서비스입니다. 메인은 전체 기준을 한 번에 잡고, 세부 정보는 가격·프로필·지역·결제·후기 안내로 이어지게 합니다.</p>
+</div>
+<div class="tq-copy">
+<p>이용자는 여성 고객, 장소는 집·호텔·숙소처럼 고객이 머무는 공간, 진행 방식은 예약 상담 후 남성관리사가 방문하는 케어입니다. 메인은 이 개념을 먼저 확정한 뒤 가격, 프로필, 후기, 결제, 지역 확인으로 이어지는 허브 역할을 합니다.</p>
+<p>중요한 것은 이름보다 확인 기준입니다. 토닥이 공식센터는 <strong class="tq-em">가격, 코스, 남성관리사 프로필, 결제 방식, 후기, 방문 가능 지역</strong>을 예약 전에 확인할 수 있도록 정리합니다. 자세한 판단은 아래 가격, 프로필, 결제, 후기, 지역 섹션에서 필요한 항목만 이어서 확인하면 됩니다.</p>
+</div><a class="tq-link" href="https://todaqi.com/여성전용마사지/">여성전용마사지 기준 자세히 보기</a>
+<div aria-label="토닥이 공식센터 서비스 기준 정리" class="tq-table-wrap">
+<table class="tq-table">
+<thead><tr><th>구분</th><th>토닥이 공식센터 기준</th></tr></thead>
+<tbody>
+<tr><td><strong>핵심 정의</strong></td><td>여성 고객을 위한 여성전용마사지 안내 서비스입니다.</td></tr>
+<tr><td><strong>이용 대상</strong></td><td>여성 고객을 기준으로 상담하고 안내합니다.</td></tr>
+<tr><td><strong>진행 장소</strong></td><td>집, 호텔, 숙소, 오피스텔 등 고객이 머무는 공간으로 방문합니다.</td></tr>
+<tr><td><strong>진행 방식</strong></td><td>문의, 지역 확인, 코스 확인, 프로필 확인, 결제 방식 확인, 방문 순서로 이어집니다.</td></tr>
+<tr><td><strong>예약 전 기준</strong></td><td>가격, 코스, 남성관리사 프로필, 결제 방식, 후기, 방문 가능 지역을 먼저 확인합니다.</td></tr>
+<tr><td><strong>주의할 점</strong></td><td>사이트마다 코스명과 안내 범위가 다를 수 있으므로 실제 가격·프로필·결제·지역 기준을 비교해야 합니다.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="tq-card-grid col-3">
+<article class="tq-card-mini"><b>안내 범위</b><p>이 페이지는 여성전용마사지 예약 전 확인 안내를 다룹니다. 상담 전 기준을 먼저 잡는 것이 메인의 역할입니다.</p></article>
+<article class="tq-card-mini"><b>정체성</b><p>대상, 장소, 진행 방식, 상담 전 기준을 함께 설명해 어떤 서비스인지 분명히 보여줍니다.</p></article>
+<article class="tq-card-mini"><b>차별점</b><p>서비스 기준과 안전 기준을 먼저 보여주고, 가격·관리사·후기·결제·지역 판단은 필요한 세부 페이지로 이어주는 허브형 메인페이지입니다.</p></article>
+</div>
+</div>
+</section>
+<section class="tq-section" id="intent-section">
+<div class="tq-wrap">
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">02 · IDENTITY</span>
+<h2 id="intent">이용 전 <span class="accent">어떤 기준을 확인해야 하나요?</span></h2>
+<p>상단의 정의를 실제 상담 상황에 대입하면 일곱 가지 기준으로 정리됩니다. 이 기준이 있어야 어떤 대상, 장소, 방식, 비용 구조를 가진 서비스인지 명확해집니다.</p>
+</div>
+<p class="tq-intro-note">처음 상담할 때는 좋은 말보다 <strong class="tq-em">실제 가능 여부</strong>를 먼저 보는 편이 빠릅니다. <strong class="tq-em">위치, 시간, 관리사 확인, 결제 방식</strong>까지 이어서 확인하면 판단이 덜 흔들립니다.</p>
+<div class="tq-process">
+<article class="tq-process-item"><span class="tq-process-num">01</span><div class="tq-process-tx"><b>누가 이용하나요?</b><p>여성 고객을 기준으로 안내합니다. 상담도 여성 고객의 위치, 시간, 원하는 코스에 맞춰 진행됩니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">02</span><div class="tq-process-tx"><b>무엇을 이용하나요?</b><p>남성관리사가 방문해 케어를 제공하는 여성전용마사지 방문 케어입니다. 코스명보다 시간, 가격, 진행 범위, 관리사 확인이 먼저입니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">03</span><div class="tq-process-tx"><b>어디에서 받나요?</b><p>집, 호텔, 숙소처럼 고객이 머무는 공간에서 진행합니다. 현재 위치와 가능 지역이 맞아야 상담이 빠릅니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">04</span><div class="tq-process-tx"><b>언제 가능한가요?</b><p>당일 가능 여부는 남성관리사 일정과 이동 거리에 따라 달라집니다. 원하는 시간대를 먼저 말하면 가능 여부를 빠르게 확인할 수 있습니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">05</span><div class="tq-process-tx"><b>왜 찾나요?</b><p>이동 부담을 줄이고 익숙한 공간에서 조용히 케어를 받고 싶을 때 찾습니다. 그래서 사생활 보호, 상담 응대, 관리사 확인이 중요합니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">06</span><div class="tq-process-tx"><b>어떻게 진행하나요?</b><p>문의, 가능 지역, 코스, 관리사, 결제 방식, 방문 순서로 봅니다. 순서가 분명하면 불필요한 오해가 줄어듭니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">07</span><div class="tq-process-tx"><b>얼마를 확인하나요?</b><p>처음 문의에서는 기본 금액과 추가비가 생기는 상황만 먼저 확인하고, 세부 금액은 가격 안내에서 코스별로 비교합니다.</p></div></article>
+</div>
+<a class="tq-link" href="https://todaqi.com/todaki-first-time/">처음 문의 전 확인 순서 보기</a><a class="tq-link" href="https://todaqi.com/chat">카톡으로 가능 여부 확인하기</a>
+</div>
+</section>
+<section class="tq-section" id="truth-section"><div class="tq-wrap"><figure class="tq-section-figure">
+<img alt="예약 전 가격과 프로필을 함께 확인하는 체크 카드" height="1672" loading="lazy" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-trust-standard-cover.webp" width="941"/></figure><div class="tq-section-head">
+<span class="tq-section-eyebrow">03 · SAFETY</span><h2 id="truth">왜 여성전용마사지 기준을 먼저 봐야 하나요?</h2><p>처음 찾을 때 가장 위험한 것은 "무조건 가능하다", "제일 저렴하다" 같은 말만 보고 결정하는 것입니다. 좋은 안내는 가능 지역, 프로필 확인, 결제 조건, 후기 기준을 숨기지 않습니다.</p></div><ul class="tq-standard-list"><li class="tq-standard"><div><b>서비스 범위</b><span>여성전용마사지 안내 범위를 먼저 구분합니다.</span></div></li><li class="tq-standard"><div><b>금지 범위</b><span>불법·불건전 서비스, 성적 서비스, 조건만남, 애인대행, 유사 성행위, 의료적 치료 행위는 안내하지 않습니다.</span></div></li><li class="tq-standard"><div><b>프로필 확인</b><span>사진만이 아니라 방문 가능 시간, 방문 가능 지역, 실제 배정 기준을 함께 봅니다.</span></div></li><li class="tq-standard"><div><b>가격 공개</b><span>B코스와 C코스 기본 금액, 추가 안내가 필요한 상황을 나눠 설명합니다.</span></div></li><li class="tq-standard"><div><b>후불 결제와 예약금</b><span>본인 번호 예약은 후불 결제 기준으로 안내하고, 확인이 어려운 연락 방식은 예약금 여부를 따로 확인합니다.</span></div></li><li class="tq-standard"><div><b>후기 판단</b><span>감상만 있는 후기보다 날짜, 지역, 코스, 가격, 프로필 확인, 상담 응대가 보이는 후기를 봅니다.</span></div></li></ul><div aria-label="토닥이 공식센터 운영 기준" class="tq-table-wrap"><p class="tq-table-title">예약 전 확인 기준</p><table class="tq-table"><thead><tr><th>확인 항목</th><th>좋은 안내의 기준</th></tr></thead><tbody><tr><td><strong>정의</strong></td><td>어떤 서비스를 어떤 방식으로 진행하는지 분명히 설명합니다.</td></tr><tr><td><strong>가격</strong></td><td>기본 금액과 추가 안내가 필요한 상황을 나눕니다.</td></tr><tr><td><strong>프로필</strong></td><td>사진, 가능 시간, 가능 지역, 실제 배정 여부를 함께 확인합니다.</td></tr><tr><td><strong>결제</strong></td><td>후불 결제와 예약금이 생기는 상황을 예약 전에 설명합니다.</td></tr><tr><td><strong>지역</strong></td><td>지역명만 나열하지 않고 실제 방문 가능 시간과 이동 가능 여부를 확인합니다.</td></tr><tr><td><strong>제한 문의</strong></td><td>운영 원칙에 맞지 않는 요구는 상담 단계에서 제한합니다.</td></tr><tr><td><strong>금지 범위</strong></td><td>불법 또는 불건전 서비스, 성적 서비스, 조건만남, 애인대행, 유사 성행위, 의료적 치료 행위는 안내하지 않습니다.</td></tr></tbody></table></div><div class="tq-info-box" style="margin-top:14px;"><p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">처음 방문자가 바로 판단할 수 있게 만든 기준</p><p>토닥이 공식센터의 메인은 서비스 기준을 먼저 확정하고, <strong class="tq-em">가격·프로필·후기·결제·지역</strong>을 예약 전 확인 항목으로 이어줍니다. 세부 안내는 각각의 하위 페이지가 맡고, 메인에서는 "내 상황에 맞는 서비스인지"를 빠르게 판단할 수 있게 정리합니다.</p><ul class="tq-info-points"><li>정의는 첫 화면과 첫 섹션에서 끝나야 합니다.</li><li>가격과 프로필은 같은 흐름에서 확인해야 합니다.</li><li>후불 결제와 예약금 조건은 예약 전 확인 항목입니다.</li><li>지역 정보는 메인의 보조 정보이고, 자세한 내용은 지역 허브가 맡습니다.</li></ul></div>
+<div class="tq-info-box" style="margin-top:14px;">
+<p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">운영 기준과 업데이트</p>
+<p>이 페이지는 토닥이 공식센터의 메인 안내로, 서비스 정의와 예약 전 확인 기준을 한곳에 정리합니다. 여기서 말하는 공식센터는 todaqi.com에서 직접 운영하는 가격·코스·프로필·지역 상담 안내 채널을 뜻합니다. 코스 금액, 프로필 배정, 방문 가능 지역은 상담 시점과 남성관리사 일정에 따라 달라질 수 있으므로 공식 문의에서 다시 확인합니다.</p>
+<ul class="tq-info-points">
+<li>운영 주체: 토닥이 공식센터 (todaqi.com 직접 운영)</li><li>최근 검토: 2026년 7월 3일</li>
+<li>확인 범위: 서비스 정의, 가격 기준, 프로필 확인, 결제 방식, 지역 가능 여부, 안전 기준</li>
+<li>운영 원칙: 본인 확인이 어려운 연락 방식은 예약금 여부를 먼저 안내합니다.</li>
+<li>제한 기준: 불법·불건전 서비스, 성적 서비스, 조건만남, 애인대행, 유사 성행위, 의료적 치료 행위는 안내하지 않습니다.</li>
+</ul>
+</div><div class="tq-info-box tq-privacy-box" style="margin-top:14px;">
+<p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">개인정보와 상담 제한 기준</p>
+<p>토닥이 공식센터는 예약 상담에 필요한 범위의 정보만 확인합니다. 위치, 시간, 코스, 연락 방식처럼 배정과 안내에 필요한 내용 중심으로 상담하며, 운영 원칙에 맞지 않는 요청은 상담 단계에서 진행하지 않습니다.</p>
+<ul class="tq-info-points">
+<li>개인정보: 상담과 예약 안내에 필요한 정보만 확인합니다.</li>
+<li>안전 기준: 불편하거나 운영 원칙에 맞지 않는 요청, 불건전하거나 성적 의미로 오해될 수 있는 요청은 상담 단계에서 제한합니다.</li>
+<li>예약금 안내: 본인 확인이 어려운 연락 방식은 예약금 여부를 먼저 설명합니다.</li>
+<li>공식 문의: 가격, 프로필, 방문 가능 지역은 공식 상담에서 다시 확인합니다.</li>
+</ul>
+</div>
+<a class="tq-link" href="https://todaqi.com/profile/">운영 기준에 맞는 프로필 확인 방법 보기</a></div></section>
+<section class="tq-section" id="price-section">
+<div class="tq-wrap">
+<figure class="tq-section-figure">
+<img alt="B코스와 C코스 가격을 비교하는 안내 이미지" height="1672" loading="lazy" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-course-guide-cover.webp" width="941"/>
+</figure>
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">04 · PRICE</span>
+<h2 id="price">가격은 <span class="accent">코스 시간과 추가 기준을 함께 봐야 합니다</span></h2>
+<p>가격은 코스 금액만 따로 보는 것이 아니라, 시간, 이동 조건, 상담 시점, 관리사 확인 방식, 결제 방식을 함께 봐야 합니다. 메인에서는 B코스와 C코스 기본 금액만 짧게 보고, 자세한 금액과 추가 안내는 가격 안내 페이지에서 확인하시면 됩니다.</p>
+</div>
+<ul class="tq-course-list">
+<li class="tq-course">
+<span aria-hidden="true" class="tq-course-ico b">🌸</span>
+<div class="tq-course-tx"><b>B코스 · 90분</b><span>전신 이완 중심</span></div>
+<div class="tq-course-price"><strong>160,000원</strong><em>기본 안내</em></div>
+</li>
+<li class="tq-course">
+<span aria-hidden="true" class="tq-course-ico c">🌿</span>
+<div class="tq-course-tx"><b>C코스 · 120분</b><span>조금 더 여유 있게 보고 싶을 때 비교합니다</span></div>
+<div class="tq-course-price"><strong>200,000원</strong><em>120분 안내</em></div>
+</li>
+</ul>
+<div class="tq-info-box" style="margin-top:14px;">
+<p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">가격을 볼 때 함께 볼 것</p>
+<p>B코스와 C코스는 시간과 구성에서 차이가 납니다. 상담 전에는 기본 금액만 보지 말고, 이동 거리, 예약금 포함 여부, 안내받은 관리사 정보와 실제 배정 내용, 취소 안내까지 함께 확인하는 편이 안전합니다.</p>
+</div>
+<div class="tq-table-wrap">
+<table class="tq-table">
+<thead><tr><th>구분</th><th>헷갈리기 쉬운 부분</th><th>예약 전에 볼 내용</th></tr></thead>
+<tbody>
+<tr><td><p style="margin:0;"><strong>기본 금액</strong></p></td><td><p style="margin:0;">코스명만 보고 실제 시간을 놓치는 경우가 있습니다.</p></td><td><p style="margin:0;">B코스 90분 160,000원</p><p style="margin:4px 0 0;">C코스 120분 200,000원을 먼저 확인합니다.</p></td></tr>
+<tr><td><p style="margin:0;"><strong>추가 안내</strong></p></td><td><p style="margin:0;">이동 거리나 예약 시간에 따라 추가 안내가 필요할 수 있습니다.</p></td><td><p style="margin:0;">가능 지역과 희망 시간을 말한 뒤 추가 안내 여부를 확인합니다.</p></td></tr>
+<tr><td><p style="margin:0;"><strong>결제 방식</strong></p></td><td><p style="margin:0;">후불, 선입금, 예약금이 한꺼번에 섞이면 헷갈릴 수 있습니다.</p></td><td><p style="margin:0;">본인 번호 예약은 후불 방식</p><p style="margin:4px 0 0;">안심번호 예약금은 별도로 구분합니다.</p></td></tr>
+<tr><td><p style="margin:0;"><strong>관리사 확인</strong></p></td><td><p style="margin:0;">사진만 보고 결정하면 실제 안내와 다른 부분을 놓칠 수 있습니다.</p></td><td><p style="margin:0;">사진, 가능 시간, 가능 지역, 상담 응대를 함께 봅니다.</p></td></tr>
+</tbody>
+</table>
+</div>
+<a class="tq-link" href="https://todaqi.com/price/">B코스·C코스 금액 자세히 보기</a>
+</div>
+</section>
+<section class="tq-section" id="profile-section">
+<div class="tq-wrap">
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">05 · PROFILE</span>
+<h2 id="profile">남성관리사 확인은 <span class="accent">사진보다 실제 배정 기준을 봅니다</span></h2>
+<p>관리사 정보는 상담 전에 참고하는 자료입니다. 사진만 보는 것보다 가능한 시간, 이동 조건, 상담 응대, 실제 배정 내용이 내 상황과 맞는지를 함께 확인하는 편이 좋습니다.</p>
+</div>
+<div class="tq-card-grid col-3">
+<article class="tq-card-mini"><b>사진</b><p>과도한 보정이나 설명 부족이 없는지 확인합니다.</p></article>
+<article class="tq-card-mini"><b>가능 시간</b><p>현재 위치와 희망 시간에 실제 배정이 가능한지 봅니다.</p></article>
+<article class="tq-card-mini"><b>가능 지역</b><p>현재 위치와 남성관리사의 이동 조건이 맞는지 확인합니다.</p></article>
+</div>
+<div class="tq-info-box" style="margin-top:14px;">
+<p>프로필과 현장이 다르게 느껴질까 걱정하는 분이 많습니다. 이럴 때는 진행 전에 상담창에서 다시 확인하고, 안내가 맞지 않는다고 느껴지면 취소 가능 여부까지 함께 물어보는 것이 좋습니다.</p>
+<p>고객용 프로필 확인과 별도로 관리사 지원 조건은 <a href="https://todaqi.com/recruit/">토닥이 구인 기준</a>에서 분리해 안내합니다.</p></div>
+<a class="tq-link" href="https://todaqi.com/todaki-therapist-profile-check-guide/">관리사 확인 가이드 보기</a>
+</div>
+</section>
+<section class="tq-section" id="payment-section">
+<div class="tq-wrap">
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">06 · PAYMENT</span>
+<h2 id="payment-heading">후불 결제와 예약금은 <span class="accent">연락 방식에 따라 달라질 수 있습니다</span></h2>
+<p>결제는 예약 전에 반드시 확인해야 합니다. 특히 본인 번호, 안심번호, 발신표시제한처럼 연락 방식이 다르면 안내가 달라질 수 있습니다.</p>
+</div>
+<div class="tq-info-box">
+<p>본인 전화번호로 예약하는 경우에는 후불 결제로 안내합니다. 안심번호나 발신표시제한처럼 확인이 어려운 연락 방식은 노쇼 방지를 위해 예약금 5만 원이 발생할 수 있으며, 실제 이용 시 결제 금액에 포함됩니다.</p>
+<ul class="tq-info-points">
+<li>총 금액과 예약금 포함 여부는 상담 초반에 확인합니다.</li>
+<li>이동 안내가 필요한 지역은 방문 가능 여부와 함께 확인합니다.</li>
+<li>결제 방식이 불분명하면 예약을 확정하기 전에 다시 물어보는 편이 좋습니다.</li>
+</ul>
+</div>
+<div class="tq-info-box" style="margin-top:10px;">
+<p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">처음 문의할 때 이렇게 말하면 됩니다</p>
+<p>"○○역 근처에 있고 오늘 저녁 ○시 이후 가능할까요? B코스와 C코스 가격, 프로필 확인, 후불 결제 방식도 함께 알고 싶습니다." 정도면 상담에 필요한 내용이 한 번에 전달됩니다.</p>
+</div>
+<a class="tq-link" href="https://todaqi.com/todaki-safe-payment/">후불·예약금 확인 기준 보기</a>
+</div>
+</section>
+<section class="tq-section" id="ccourse-section">
+<div class="tq-wrap">
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">07 · COURSE</span>
+<h2 id="ccourse">B코스와 C코스는 <span class="accent">원하는 시간에 맞춰 비교하면 됩니다</span></h2>
+<p>코스는 이름만 보고 고르기보다 원하는 시간, 오늘 컨디션, 프로필 가능 여부, 지역 상황을 함께 보고 선택하는 편이 자연스럽습니다. 메인에서는 차이만 짧게 안내하고, C코스에 대한 자세한 내용은 전용 페이지로 이어집니다.</p>
+</div>
+<div class="tq-card-grid col-3">
+<article class="tq-card-mini"><b>B코스</b><p>B코스는 90분으로, 처음 이용할 때 많이 비교하는 기본 코스입니다.</p></article>
+<article class="tq-card-mini"><b>C코스</b><p>C코스는 120분으로, 조금 더 여유 있게 보고 싶을 때 함께 비교합니다.</p></article>
+<article class="tq-card-mini"><b>함께 볼 것</b><p>가격만 보지 말고 방문 가능 시간, 남성관리사 프로필, 방문 가능 지역, 결제 방식을 함께 확인합니다.</p></article>
+</div>
+<div class="tq-info-box" style="margin-top:14px;">
+<p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">코스 차이는 짧게만 안내합니다</p>
+<p>B코스와 C코스는 어느 쪽이 더 낫다기보다 원하는 시간과 상황에 맞춰 고르는 코스입니다. C코스 후기, 120분 이용감, B코스와의 차이는 전용 안내에서 더 자세히 볼 수 있습니다.</p>
+<ul class="tq-info-points">
+<li>B코스는 90분으로 기본 금액과 가능한 시간을 먼저 봅니다.</li>
+<li>C코스는 120분으로 조금 더 여유 있게 보고 싶을 때 비교합니다.</li>
+<li>마지막에는 가격, 방문 가능 지역, 결제 방식까지 맞춘 뒤 정하는 편이 좋습니다.</li>
+</ul>
+</div>
+<a class="tq-link" href="https://todaqi.com/todaki-c-course-review-guide/">토닥이 C코스 선택 방법 보기</a>
+</div>
+</section>
+<section class="tq-section" id="review-section">
+<div class="tq-wrap">
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">08 · REVIEW</span>
+<h2 id="review">후기는 실제 이용 흐름과 반복 기준을 함께 보세요</h2>
+<p>후기에서 반복되는 핵심은 집·호텔·숙소에서 바로 받는 편의성, 방문 전 준비 안내, 컨디션에 맞춘 강도 조절, 조용한 응대입니다. 반대로 도착 시간, 공간 조건, 최종 금액과 예약금 포함 여부는 예약 전에 다시 확인해야 합니다.</p>
+</div>
+<p class="tq-intro-note">후기는 상담 전 실제 확인 흐름을 빠르게 보는 보조 기준입니다. 메인에서는 후기 원문을 그대로 노출하지 않고 개인정보와 민감한 표현을 제거해, 예약 전 판단에 필요한 항목만 요약합니다. 전체 후기는 <a href="https://todaqi.com/reviews/">후기 대표 페이지</a>에서, 대화 흐름은 <a href="https://todaqi.com/kakao/">카톡 후기</a>에서 이어서 확인하세요.</p>
+<div class="tq-process">
+<article class="tq-process-item"><span class="tq-process-num">01</span><div class="tq-process-tx"><b>방문 편의성</b><p>집·호텔·숙소에서 바로 받을 수 있는지, 밖으로 이동하지 않아도 되는 흐름인지 확인합니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">02</span><div class="tq-process-tx"><b>방문 전 안내</b><p>예상 도착 시간, 준비할 공간, 필요한 주소 범위, 준비물 안내가 상담 초반에 정리되는지 봅니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">03</span><div class="tq-process-tx"><b>컨디션 맞춤</b><p>말수, 강도, 집중 부위처럼 그날 상태에 맞춰 조절하고 진행 중에도 다시 확인하는지 봅니다.</p></div></article>
+<article class="tq-process-item"><span class="tq-process-num">04</span><div class="tq-process-tx"><b>조건 투명성</b><p>B/C코스 총액, 예약금·후불 조건, 시간 지연 가능성이 예약 확정 전에 드러나는지 봅니다.</p></div></article>
+</div>
+<div class="tq-review-summary" style="margin-top:14px;">
+<div class="tq-review-score">
+<b>후기 재구성 기준</b>
+<span class="num">실제 흐름 요약</span>
+<span class="stars">방문 편의성·준비 안내·맞춤 응대·조건 투명성</span>
+</div>
+<div class="tq-review-note">이 섹션은 후기에서 반복되는 포인트를 메인페이지 성격에 맞게 재구성한 안내입니다. 실제 후기 원문과 개인정보는 노출하지 않습니다.<br/>전체 후기는 <a href="https://todaqi.com/reviews/">후기 대표 페이지</a>, 판단 기준은 <a href="https://todaqi.com/todaki-official-review-guide/">공식 후기 가이드</a>에서 이어서 볼 수 있습니다.</div>
+</div><div class="tq-info-box" data-tdq-review-reference="20260702" style="margin-top:14px;"><p style="font-weight:800;margin-bottom:8px;color:var(--tq-ink);">후기에서 반복되는 만족 포인트와 예약 전 확인 포인트</p><p>만족 후기는 이동하지 않아도 되는 편의성, 방문 전 안내, 조용한 진행, 강도 조절이 반복됩니다. 예약 전에는 도착 시간, 공간 조건, 최종 금액, 예약금 포함 여부를 다시 확인하면 후기와 실제 이용 사이의 차이를 줄일 수 있습니다.</p></div>
+<a class="tq-link" href="https://todaqi.com/reviews/">후기 대표 페이지에서 모아 보기</a>
+</div>
+</section>
+<section class="tq-section" id="region-section">
+<div class="tq-wrap">
+<figure class="tq-section-figure">
+<img alt="서울·경기·인천 지역 안내 카드" height="1672" loading="lazy" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-area-guide-cover.webp" width="941"/>
+</figure>
+<div class="tq-section-head">
+<span class="tq-section-eyebrow">09 · AREA</span>
+<h2 id="region">지역 안내는 <span class="accent">가능 여부를 확인하는 보조 정보입니다</span></h2>
+<p>지역 안내는 여성 고객이 있는 위치에서 상담 가능 여부를 확인하기 위한 보조 페이지입니다. 강남·수원·인천처럼 생활권마다 이동 거리와 가능 시간이 다르기 때문에, 자세한 내용은 지역 허브와 각 지역 안내에서 이어서 확인하는 것이 좋습니다.</p>
+</div>
+<ul class="tq-region-list">
+<li class="tq-region"><b>서울</b><span>강남·서초·송파·마포·용산 등 주요 생활권의 가능 시간을 확인합니다.</span></li>
+<li class="tq-region"><b>경기</b><span>수원·성남·분당·일산·동탄처럼 이동 거리와 시간대가 중요한 지역을 확인합니다.</span></li>
+<li class="tq-region"><b>인천</b><span>송도·청라·부평처럼 숙소와 상권이 나뉘는 지역은 가능 여부를 먼저 확인합니다.</span></li>
+</ul>
+<div class="tq-region-hub">
+<div class="tq-hub-card"><span class="tq-hub-badge">서울</span><p class="tq-hub-desc">강남·서초·송파·마포·용산 외 주요 자치구 안내</p><a class="tq-hub-link" href="/local/gangnam/">강남·서초 대표 지역 보기 →</a></div>
+<div class="tq-hub-card"><span class="tq-hub-badge">경기</span><p class="tq-hub-desc">성남·분당·수원·일산·동탄 외 주요 권역 안내</p><a class="tq-hub-link" href="/local/suwon/">수원·인계 대표 지역 보기 →</a></div>
+<div class="tq-hub-card"><span class="tq-hub-badge">인천</span><p class="tq-hub-desc">송도·청라·부평을 포함한 인천 권역 안내</p><a class="tq-hub-link" href="/local/incheon/">인천 권역 보기 →</a></div>
+</div>
+<a class="tq-link tq-link-primary" href="/local/">지역별 안내 전체 보기</a>
+</div>
+</section>
+<section class="tq-section" id="faq-section"><div class="tq-wrap"><figure class="tq-section-figure">
+<img alt="토닥이 공식센터 FAQ와 첫 문의 예시 안내" height="1672" loading="lazy" src="https://todaqi.com/wp-content/uploads/2026/05/todaqi-faq-guide-cover.webp" width="941"/></figure><div class="tq-section-head">
+<span class="tq-section-eyebrow">10 · FAQ</span><h2 id="faq">자주 묻는 질문 <span class="accent">(FAQ)</span></h2><p>메인에는 처음 찾는 분이 바로 확인해야 할 질문만 남겼습니다.</p></div><ul class="tq-faq"><li><details><summary>토닥이 공식센터는 어떤 서비스인가요?</summary><div class="tq-faq-body">토닥이 공식센터는 여성 고객이 집·호텔·숙소 등 머무는 공간에서 남성관리사 방문 케어를 예약하기 전, 가격·코스·프로필·후기·결제 방식·가능 지역을 확인하도록 정리한 여성전용마사지 안내 서비스입니다. 예약 전에는 이용 지역과 시간, 코스 총액, 프로필 확인 방식, 후불·예약금 조건을 함께 확인하는 것이 핵심입니다.</div></details></li><li><details><summary>사이트마다 안내가 다른가요?</summary><div class="tq-faq-body">네. 코스명, 가격 안내, 프로필 확인 방식은 사이트마다 다를 수 있습니다. 예약 전에는 실제 가격, 배정 가능 정보, 결제 방식, 가능 지역을 기준으로 비교하는 편이 좋습니다.</div></details></li><li><details><summary>공식센터는 어떤 역할을 하나요?</summary><div class="tq-faq-body">여기서 말하는 공식센터는 todaqi.com에서 직접 운영하는 가격·코스·프로필·지역 상담 안내 채널을 뜻합니다. 예약 전 확인 기준을 정리하고 가격·관리사·후기·지역 안내로 이어주는 메인 허브이며, 세부 확정 내용은 공식 문의에서 다시 확인합니다.</div></details></li><li><details><summary>불건전 서비스도 안내하나요?</summary><div class="tq-faq-body">아닙니다. 이 페이지는 여성전용마사지의 예약 전 확인 기준을 안내하며, 불법 또는 불건전 서비스, 성적 서비스, 조건만남, 애인대행, 유사 성행위, 의료적 치료 행위는 안내하지 않습니다.</div></details></li><li><details><summary>가격은 어디서 확인하나요?</summary><div class="tq-faq-body">메인에서는 가격을 판단하는 기준만 먼저 확인합니다. B코스와 C코스 금액, 추가비, 예약금 안내는 <a href="#price">가격 섹션 다시 보기</a>에서 자세히 보면 됩니다.</div></details></li><li><details><summary>관리사 정보는 어떻게 봐야 하나요?</summary><div class="tq-faq-body">처음 문의할 때는 사진만 요청하기보다 희망 시간, 위치, 가능한 관리사 정보, 실제 배정 가능 여부를 함께 물어보면 됩니다. 자세한 기준은 <a href="#profile">프로필 섹션 다시 보기</a>에서 이어서 볼 수 있습니다.</div></details></li><li><details><summary>후불 결제와 예약금은 어떻게 다른가요?</summary><div class="tq-faq-body">후불 결제는 이용 후 결제하는 방식이고, 예약금은 연락 확인이 어려운 경우 먼저 안내될 수 있는 금액입니다. 예약금이 필요한지는 상담 초반에 확인하면 됩니다.</div></details></li><li><details><summary>지역페이지는 왜 따로 있나요?</summary><div class="tq-faq-body">메인은 서비스 기준을 설명하고, 지역페이지는 실제 생활권별 방문 가능 시간과 이동 가능성을 더 자세히 보여줍니다. 강남·수원·인천처럼 생활권이 다르면 확인 기준도 달라질 수 있습니다.</div></details></li><li><details><summary>처음 문의할 때 무엇을 말하면 되나요?</summary><div class="tq-faq-body">가까운 역이나 동네, 원하는 시간, 보고 싶은 코스, 관리사 확인 여부, 후불 결제 방식을 함께 남기면 됩니다. 예를 들어 "강남역 근처이고 오늘 9시 이후 가능한가요? B코스와 C코스 가격, 관리사 확인, 후불 결제 방식도 알고 싶습니다"처럼 문의하면 됩니다.</div></details></li></ul>
+<a class="tq-link" href="https://todaqi.com/faq/">전체 FAQ 보기</a></div></section>
+<section class="tq-section">
+<div class="tq-wrap">
+<p class="tq-intro-note tq-final-cta-text" style="margin-bottom:0;">토닥이 공식센터에서 가격, 프로필, 후기, 가능 지역, 코스, 결제 방식을 예약 전 순서대로 확인하세요. 더 자세한 이용 기준은 <a href="https://todaqi.com/blog/">여성전용마사지 이용 가이드</a>에서 이어서 확인할 수 있습니다.</p>
+</div>
+</section>
+<script id="tq-casanova-video-script">
+(function () {
+  var root = document.querySelector('[data-tdq-component="casanova-video"]');
+  if (!root) return;
+  var video = root.querySelector('video');
+  var button = root.querySelector('button');
+  if (!video || !button) return;
+  function playMutedLoop() {
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('loop', '');
+    video.setAttribute('playsinline', '');
+    try {
+      if (video.readyState > 0) video.currentTime = 0;
+    } catch (error) {}
+    var started = video.play();
+    if (started && typeof started.then === 'function') {
+      started.then(function () {
+        root.classList.add('is-playing');
+      }).catch(function () {
+        root.classList.remove('is-playing');
+      });
+    } else {
+      root.classList.add('is-playing');
+    }
+  }
+  button.addEventListener('click', playMutedLoop);
+})();
+</script></main>
+<!-- /wp:html -->
